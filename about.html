@@ -1,0 +1,1089 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BJB Solutions | About Us</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@300;400;600;700;900&family=Barlow:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --navy: #0b2a4a;
+      --navy-mid: #1a3f6a;
+      --blue: #1e6ab4;
+      --ice: #b8d1e8;
+      --white: #f5f8fc;
+      --gold: #c8922a;
+      --gold-light: #e8b84b;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Barlow', sans-serif;
+      background: var(--navy);
+      color: var(--white);
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* ─── CURSOR ─── */
+    .cursor {
+      width: 12px; height: 12px;
+      background: var(--gold-light);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9999;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring {
+      width: 40px; height: 40px;
+      border: 1.5px solid var(--gold-light);
+      border-radius: 50%;
+      position: fixed; top: 0; left: 0;
+      pointer-events: none; z-index: 9998;
+      transition: width 0.2s, height 0.2s;
+      mix-blend-mode: difference;
+    }
+    .cursor-ring.expanded { width: 70px; height: 70px; }
+
+    /* ─── NAV ─── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      z-index: 1000;
+      padding: 0 4rem;
+      height: 72px;
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(11,42,74,0.82);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(184,209,232,0.12);
+    }
+    .nav-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: 0.08em;
+      color: var(--white);
+      display: flex; align-items: center; gap: 0.5rem;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold-light); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600; font-size: 0.85rem;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--ice); text-decoration: none;
+      position: relative; padding-bottom: 4px;
+      transition: color 0.2s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--gold-light);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold-light); }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-cta {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 700; font-size: 0.8rem;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      background: var(--gold); color: var(--navy);
+      border: none; padding: 0.6rem 1.6rem;
+      cursor: none;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      transition: background 0.2s, transform 0.2s;
+    }
+    .nav-cta:hover { background: var(--gold-light); transform: scale(1.04); }
+
+    /* ─── PAGE HERO ─── */
+    .page-hero {
+      position: relative;
+      height: 55vh; min-height: 440px;
+      display: flex; align-items: flex-end;
+      overflow: hidden;
+      padding-top: 72px;
+    }
+    .page-hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('https://images.unsplash.com/photo-1521737711867-e3b97375f902?w=1800&q=80');
+      background-size: cover; background-position: center 30%;
+      filter: brightness(0.3) saturate(0.6);
+      transform: scale(1.06);
+      transition: transform 10s ease;
+    }
+    .page-hero:hover .page-hero-bg { transform: scale(1.0); }
+    .page-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(160deg, rgba(11,42,74,0.7) 0%, rgba(11,42,74,0.15) 50%, rgba(11,42,74,0.95) 100%);
+    }
+    .page-hero-stripe {
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 6px;
+      background: linear-gradient(to bottom, var(--gold-light), var(--blue), transparent);
+    }
+    .page-hero-content {
+      position: relative; z-index: 2;
+      padding: 0 4rem 4rem;
+      width: 100%;
+    }
+    .breadcrumb {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gold-light);
+      display: flex; align-items: center; gap: 0.7rem;
+      margin-bottom: 1rem;
+      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .breadcrumb span { color: rgba(184,209,232,0.5); }
+    .page-hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(3.5rem, 7vw, 7rem);
+      line-height: 0.92; letter-spacing: 0.03em;
+      opacity: 0; animation: fadeUp 0.8s 0.4s forwards;
+    }
+    .page-hero h1 .outline {
+      -webkit-text-stroke: 1.5px var(--ice);
+      color: transparent;
+    }
+    .page-hero h1 .accent { color: var(--gold-light); }
+    .page-hero-meta {
+      display: flex; gap: 2rem; flex-wrap: wrap;
+      margin-top: 1.2rem;
+      opacity: 0; animation: fadeUp 0.8s 0.6s forwards;
+    }
+    .meta-pill {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.18em;
+      text-transform: uppercase; color: var(--ice);
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(184,209,232,0.2);
+      padding: 0.35rem 1rem;
+      backdrop-filter: blur(6px);
+    }
+
+    /* ─── GOLD DIVIDER ─── */
+    .gold-divider {
+      height: 1px;
+      background: linear-gradient(to right, transparent, var(--gold-light), transparent);
+    }
+
+    /* ─── MAIN CONTENT ─── */
+    .main-content {
+      padding: 6rem 4rem;
+      background: var(--navy);
+    }
+
+    /* ─── ABOUT INTRO GRID ─── */
+    .about-intro {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr;
+      gap: 6rem;
+      align-items: start;
+      margin-bottom: 6rem;
+    }
+    .section-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.35em;
+      text-transform: uppercase; color: var(--gold-light);
+      display: flex; align-items: center; gap: 1rem;
+      margin-bottom: 1rem;
+    }
+    .section-label::before {
+      content: ''; width: 30px; height: 1px;
+      background: var(--gold-light);
+    }
+    .section-title {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(2.5rem, 4.5vw, 4.5rem);
+      line-height: 1; letter-spacing: 0.04em;
+      margin-bottom: 2rem;
+    }
+    .body-text {
+      font-size: 1.05rem; line-height: 1.85;
+      color: rgba(245,248,252,0.72);
+      margin-bottom: 1.2rem;
+    }
+    .values-row {
+      display: flex; flex-wrap: wrap; gap: 0.6rem;
+      margin-top: 1.8rem;
+    }
+    .value-tag {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.14em;
+      text-transform: uppercase; padding: 0.45rem 1.1rem;
+      border: 1px solid rgba(200,146,42,0.4);
+      color: var(--gold-light);
+      transition: background 0.2s, border-color 0.2s;
+      cursor: none;
+    }
+    .value-tag:hover {
+      background: rgba(200,146,42,0.12);
+      border-color: var(--gold-light);
+    }
+
+    /* ─── ENTERPRISE INFO SIDEBAR ─── */
+    .info-sidebar { display: flex; flex-direction: column; gap: 2px; }
+    .info-block {
+      background: #0d2e50;
+      padding: 2rem;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .info-block::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold-light), var(--blue));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s ease;
+    }
+    .info-block:hover { background: #122e4d; }
+    .info-block:hover::after { transform: scaleX(1); }
+    .info-block-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gold-light);
+      margin-bottom: 1rem;
+      display: flex; align-items: center; gap: 0.5rem;
+    }
+    .info-row {
+      display: flex; justify-content: space-between;
+      align-items: baseline;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(184,209,232,0.07);
+      font-size: 0.85rem;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row dt {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600; letter-spacing: 0.06em;
+      text-transform: uppercase; font-size: 0.72rem;
+      color: rgba(184,209,232,0.6);
+    }
+    .info-row dd { color: var(--ice); text-align: right; font-size: 0.85rem; }
+
+    /* ─── MISSION / VISION / GOALS ─── */
+    .mvg-section {
+      background: #07192d;
+      padding: 7rem 4rem;
+      position: relative;
+    }
+    .mvg-section::before {
+      content: 'ABOUT';
+      position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 15rem; line-height: 1;
+      color: rgba(255,255,255,0.02);
+      pointer-events: none;
+    }
+    .mv-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 4rem;
+      background: rgba(184,209,232,0.06);
+      margin-bottom: 2px;
+    }
+    .mv-card {
+      background: #0d2e50;
+      padding: 3.5rem 3rem;
+      position: relative; overflow: hidden;
+      transition: background 0.4s;
+    }
+    .mv-card::before {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 4px;
+      background: linear-gradient(to bottom, var(--gold-light), transparent);
+      transform: scaleY(0); transform-origin: top;
+      transition: transform 0.5s ease;
+    }
+    .mv-card:hover { background: #122e4d; }
+    .mv-card:hover::before { transform: scaleY(1); }
+    .mv-icon {
+      width: 56px; height: 56px;
+      background: rgba(200,146,42,0.1);
+      border: 1px solid rgba(200,146,42,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-light); font-size: 1.3rem;
+      clip-path: polygon(6px 0%, 100% 0%, calc(100% - 6px) 100%, 0% 100%);
+      margin-bottom: 1.5rem;
+      transition: background 0.3s;
+    }
+    .mv-card:hover .mv-icon { background: rgba(200,146,42,0.2); }
+    .mv-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem; letter-spacing: 0.06em;
+      color: var(--gold-light); margin-bottom: 1rem;
+    }
+    .mv-card p {
+      font-size: 0.95rem; line-height: 1.8;
+      color: rgba(245,248,252,0.7);
+    }
+
+    /* goals full width */
+    .goals-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 2px;
+      background: rgba(184,209,232,0.06);
+    }
+    .goal-card {
+      background: #0d2e50;
+      padding: 2.5rem 1.8rem;
+      border-top: 2px solid rgba(184,209,232,0.08);
+      position: relative; overflow: hidden;
+      transition: background 0.4s, border-color 0.4s;
+      cursor: none;
+    }
+    .goal-card:hover {
+      background: rgba(200,146,42,0.06);
+      border-color: var(--gold-light);
+    }
+    .goal-num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 5rem; line-height: 1;
+      color: rgba(184,209,232,0.05);
+      position: absolute; top: 0.5rem; right: 1rem;
+      transition: color 0.4s;
+    }
+    .goal-card:hover .goal-num { color: rgba(200,146,42,0.1); }
+    .goal-icon { font-size: 1.4rem; color: var(--gold-light); margin-bottom: 1rem; }
+    .goal-text {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600; font-size: 0.9rem;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      color: var(--ice); line-height: 1.5;
+    }
+
+    /* ─── DIRECTOR SECTION ─── */
+    .director-section {
+      padding: 7rem 4rem;
+      background: var(--navy);
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: 6rem;
+      align-items: center;
+    }
+    .director-visual {
+      position: relative;
+    }
+    .director-frame {
+      background: linear-gradient(145deg, #0d2e50, #0a2440);
+      border: 1px solid rgba(184,209,232,0.12);
+      padding: 3rem;
+      position: relative; overflow: hidden;
+    }
+    .director-frame::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(to right, var(--gold-light), var(--blue));
+    }
+    .dir-avatar {
+      width: 110px; height: 110px;
+      background: linear-gradient(145deg, var(--navy-mid), #1a3f6a);
+      border: 2px solid rgba(200,146,42,0.5);
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2.2rem; color: var(--gold-light);
+      clip-path: polygon(12px 0%, 100% 0%, calc(100% - 12px) 100%, 0% 100%);
+      margin-bottom: 2rem;
+    }
+    .dir-name {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: 0.06em;
+      color: var(--white); line-height: 1.05;
+    }
+    .dir-role {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.75rem; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold-light);
+      margin-top: 0.4rem; margin-bottom: 2rem;
+    }
+    .dir-detail {
+      font-size: 0.85rem;
+      color: rgba(245,248,252,0.6);
+      line-height: 1.9;
+      border-top: 1px solid rgba(184,209,232,0.1);
+      padding-top: 1.5rem;
+    }
+    .dir-detail i { color: var(--gold-light); width: 18px; }
+    .dir-tag {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      margin-top: 1.2rem;
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #4ade80;
+      border: 1px solid rgba(74,222,128,0.3);
+      padding: 0.3rem 0.9rem;
+    }
+
+    .director-details { display: flex; flex-direction: column; gap: 2px; }
+    .detail-block {
+      background: #0d2e50;
+      padding: 2rem 2.5rem;
+      display: flex; align-items: flex-start; gap: 1.5rem;
+      transition: background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .detail-block::after {
+      content: '';
+      position: absolute; left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: linear-gradient(to bottom, var(--gold-light), transparent);
+      transform: scaleY(0); transform-origin: top;
+      transition: transform 0.4s ease;
+    }
+    .detail-block:hover { background: #122e4d; }
+    .detail-block:hover::after { transform: scaleY(1); }
+    .detail-icon {
+      width: 44px; height: 44px; flex-shrink: 0;
+      border: 1px solid rgba(200,146,42,0.3);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-light); font-size: 1rem;
+      background: rgba(200,146,42,0.06);
+    }
+    .detail-block h4 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.7rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: var(--gold-light);
+      margin-bottom: 0.3rem;
+    }
+    .detail-block p {
+      font-size: 0.88rem;
+      color: rgba(245,248,252,0.7);
+      line-height: 1.6;
+    }
+
+    /* ─── BBBEE SECTION ─── */
+    .bbbee-section {
+      background: linear-gradient(160deg, #07192d, #0b2a4a);
+      padding: 7rem 4rem;
+      position: relative; overflow: hidden;
+    }
+    .bbbee-section::before {
+      content: 'B-BBEE';
+      position: absolute; right: -1rem; bottom: -2rem;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 14rem; color: rgba(255,255,255,0.025);
+      pointer-events: none;
+    }
+    .bbbee-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 4rem;
+      margin-top: 4rem;
+      align-items: center;
+      position: relative; z-index: 1;
+    }
+    .bbbee-badge-wrap { display: flex; justify-content: center; }
+    .bbbee-ring {
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      border: 2px solid rgba(200,146,42,0.35);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      text-align: center;
+      background: rgba(11,42,74,0.5);
+      backdrop-filter: blur(10px);
+      position: relative;
+      animation: spin-slow 25s linear infinite;
+    }
+    .bbbee-inner { animation: spin-slow 25s linear infinite reverse; }
+    .bbbee-inner .lv {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1rem; letter-spacing: 0.2em;
+      color: var(--gold-light);
+    }
+    .bbbee-inner .num {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 4.5rem; line-height: 1;
+      color: var(--white);
+    }
+    .bbbee-inner .pct {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.6rem; color: var(--gold-light);
+    }
+    .bbbee-inner .sub {
+      font-size: 0.65rem; letter-spacing: 0.12em;
+      color: var(--ice); margin-top: 2px;
+    }
+    .bbbee-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      background: rgba(184,209,232,0.06);
+    }
+    .bbbee-stat {
+      background: #0d2e50;
+      padding: 1.8rem 2rem;
+      position: relative; overflow: hidden;
+      transition: background 0.3s;
+    }
+    .bbbee-stat:hover { background: #122e4d; }
+    .bbbee-stat-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: rgba(184,209,232,0.55);
+      margin-bottom: 0.4rem;
+    }
+    .bbbee-stat-val {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; color: var(--gold-light); line-height: 1;
+    }
+    .bbbee-stat-sub {
+      font-size: 0.8rem; color: rgba(245,248,252,0.5);
+      margin-top: 0.2rem;
+    }
+
+    /* ─── TARGET & SERVICES ─── */
+    .ts-section {
+      padding: 7rem 4rem;
+      background: #07192d;
+    }
+    .ts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+      margin-top: 4rem;
+      background: rgba(184,209,232,0.06);
+    }
+    .ts-card {
+      background: #0d2e50;
+      padding: 3.5rem 3rem;
+      transition: background 0.4s;
+    }
+    .ts-card:hover { background: #122e4d; }
+    .ts-card h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 2rem; letter-spacing: 0.06em;
+      color: var(--gold-light); margin-bottom: 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .ts-card h3 i { font-size: 1.3rem; }
+    .ts-list { list-style: none; }
+    .ts-list li {
+      font-size: 0.9rem; color: rgba(245,248,252,0.7);
+      padding: 0.85rem 0;
+      border-bottom: 1px solid rgba(184,209,232,0.07);
+      display: flex; align-items: flex-start; gap: 0.9rem;
+      line-height: 1.5;
+      transition: color 0.2s;
+    }
+    .ts-list li:last-child { border-bottom: none; }
+    .ts-list li:hover { color: rgba(245,248,252,0.95); }
+    .ts-list li::before {
+      content: '→'; color: var(--gold-light);
+      flex-shrink: 0; margin-top: 0.05em;
+    }
+
+    /* ─── VERIFICATION STRIP ─── */
+    .verify-strip {
+      background: var(--navy);
+      padding: 4rem;
+      display: flex; flex-wrap: wrap;
+      gap: 2px;
+      justify-content: stretch;
+    }
+    .verify-item {
+      flex: 1; min-width: 200px;
+      background: #0d2e50;
+      padding: 2rem 1.5rem;
+      display: flex; flex-direction: column; gap: 0.5rem;
+      transition: background 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .verify-item::after {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold-light), var(--blue));
+      transform: scaleX(0); transform-origin: left;
+      transition: transform 0.4s;
+    }
+    .verify-item:hover { background: #122e4d; }
+    .verify-item:hover::after { transform: scaleX(1); }
+    .verify-icon { font-size: 1.4rem; color: var(--gold-light); }
+    .verify-label {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.65rem; letter-spacing: 0.25em;
+      text-transform: uppercase; color: rgba(184,209,232,0.5);
+    }
+    .verify-val {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 600; font-size: 0.9rem;
+      color: var(--ice);
+    }
+
+    /* ─── FOOTER ─── */
+    footer {
+      background: #040f1b;
+      padding: 4rem;
+      border-top: 1px solid rgba(184,209,232,0.08);
+    }
+    .footer-inner {
+      display: grid; grid-template-columns: 2fr 1fr 1fr;
+      gap: 4rem;
+      padding-bottom: 3rem;
+      border-bottom: 1px solid rgba(184,209,232,0.08);
+    }
+    .footer-logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 3rem; letter-spacing: 0.06em;
+      color: var(--white); line-height: 1;
+      margin-bottom: 1rem;
+    }
+    .footer-logo span { color: var(--gold-light); }
+    .footer-tagline {
+      font-size: 0.88rem;
+      color: rgba(245,248,252,0.45);
+      line-height: 1.7; max-width: 300px;
+    }
+    .footer-col h5 {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-size: 0.72rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: var(--gold-light);
+      margin-bottom: 1.2rem;
+    }
+    .footer-col a, .footer-col p {
+      display: block; font-size: 0.88rem;
+      color: rgba(245,248,252,0.55);
+      text-decoration: none; margin-bottom: 0.7rem;
+      transition: color 0.2s; cursor: none;
+    }
+    .footer-col a:hover { color: var(--ice); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      padding-top: 2rem;
+      font-size: 0.78rem; color: rgba(245,248,252,0.3);
+    }
+
+    /* ─── ANIMATIONS ─── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes spin-slow {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.8s ease, transform 0.8s ease; }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* ─── RESPONSIVE ─── */
+    @media (max-width: 900px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      .page-hero-content { padding: 0 1.5rem 3rem; }
+      .main-content, .mvg-section, .director-section, .bbbee-section, .ts-section, .verify-strip, footer { padding-left: 1.5rem; padding-right: 1.5rem; }
+      .about-intro, .director-section, .bbbee-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .mv-grid, .ts-grid { grid-template-columns: 1fr; }
+      .goals-row { grid-template-columns: 1fr 1fr; }
+      .bbbee-stats { grid-template-columns: 1fr 1fr; }
+      .footer-inner { grid-template-columns: 1fr; gap: 2rem; }
+      .verify-strip { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursorRing"></div>
+
+  <!-- NAV -->
+  <nav>
+    <a href="bjb-solutions.html" class="nav-logo">BJB<span>⚡</span>SOLUTIONS</a>
+    <ul class="nav-links">
+      <li><a href="bjb-solutions.html">Home</a></li>
+      <li><a href="#" class="active">About</a></li>
+      <li><a href="bjb-solutions.html#services">Services</a></li>
+      <li><a href="bjb-solutions.html#team">Contact</a></li>
+    </ul>
+    <button class="nav-cta">Get in touch</button>
+  </nav>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="page-hero-bg"></div>
+    <div class="page-hero-overlay"></div>
+    <div class="page-hero-stripe"></div>
+    <div class="page-hero-content">
+      <div class="breadcrumb">
+        <span>Home</span> <span>›</span> About Us
+      </div>
+      <h1>
+        ABOUT <span class="accent">BJB</span><br>
+        <span class="outline">SOLUTIONS</span>
+      </h1>
+      <div class="page-hero-meta">
+        <span class="meta-pill">2024/729444/07</span>
+        <span class="meta-pill">Founded 18 Nov 2024</span>
+        <span class="meta-pill">Kathu, Northern Cape</span>
+        <span class="meta-pill">100% Black Owned</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-divider"></div>
+
+  <!-- MAIN: ABOUT INTRO -->
+  <div class="main-content">
+    <div class="about-intro">
+      <div class="reveal-left">
+        <div class="section-label">Who we are</div>
+        <h2 class="section-title">
+          Dynamic.<br>
+          <span style="color:var(--gold-light)">Multi-faceted.</span><br>
+          Community-rooted.
+        </h2>
+        <p class="body-text">BJB Solutions is a dynamic, multi-faceted company based in Kathu, Northern Cape. Founded in 2024, the company is dedicated to offering a diverse range of services, including training programs, construction, commercial cleaning, gardening services, and the supply of quality goods.</p>
+        <p class="body-text">Our mission is to deliver exceptional service with professionalism and integrity — contributing to the growth and development of our community and beyond.</p>
+        <div class="values-row">
+          <span class="value-tag">Integrity</span>
+          <span class="value-tag">Excellence</span>
+          <span class="value-tag">Innovation</span>
+          <span class="value-tag">Empowerment</span>
+          <span class="value-tag">Sustainability</span>
+        </div>
+      </div>
+
+      <!-- Enterprise Info Sidebar -->
+      <div class="reveal-right">
+        <div class="section-label">Enterprise details</div>
+        <div class="info-sidebar">
+          <div class="info-block">
+            <div class="info-block-label"><i class="fas fa-file-alt"></i> Registration</div>
+            <dl>
+              <div class="info-row"><dt>Reg number</dt><dd>2024/729444/07</dd></div>
+              <div class="info-row"><dt>Enterprise</dt><dd>BJB SOLUTIONS (PTY) LTD</dd></div>
+              <div class="info-row"><dt>Reg date</dt><dd>18/11/2024</dd></div>
+              <div class="info-row"><dt>Business start</dt><dd>18/11/2024</dd></div>
+            </dl>
+          </div>
+          <div class="info-block">
+            <div class="info-block-label"><i class="fas fa-receipt"></i> Financial</div>
+            <dl>
+              <div class="info-row"><dt>Tax number</dt><dd>9119150283</dd></div>
+              <div class="info-row"><dt>Financial year end</dt><dd>February</dd></div>
+              <div class="info-row"><dt>COID ref</dt><dd>2024170691</dd></div>
+              <div class="info-row"><dt>COID valid to</dt><dd>30 April 2026</dd></div>
+            </dl>
+          </div>
+          <div class="info-block">
+            <div class="info-block-label"><i class="fas fa-map-marker-alt"></i> Registered Office</div>
+            <p style="font-size:0.88rem;color:var(--ice);line-height:1.6;">Kwikstert Street 05, Siyathemba,<br>Kathu, Northern Cape, 8446</p>
+            <p style="font-size:0.75rem;color:rgba(184,209,232,0.55);margin-top:0.7rem;"><i class="fas fa-check-circle" style="color:#4ade80;"></i> Gamagara Local Municipality — proof of residence verified</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="gold-divider"></div>
+
+  <!-- MISSION / VISION / GOALS -->
+  <section class="mvg-section">
+    <div class="reveal">
+      <div class="section-label">Our foundation</div>
+      <h2 class="section-title">Mission · Vision · <span style="color:var(--gold-light)">Goals</span></h2>
+    </div>
+
+    <div class="mv-grid reveal">
+      <div class="mv-card">
+        <div class="mv-icon"><i class="fas fa-bullseye"></i></div>
+        <h3>Mission</h3>
+        <p>To provide high-quality, reliable, and efficient services that address the diverse needs of our clients while creating sustainable opportunities and fostering economic development across our communities.</p>
+      </div>
+      <div class="mv-card">
+        <div class="mv-icon"><i class="fas fa-eye"></i></div>
+        <h3>Vision</h3>
+        <p>To be a leading and trusted service provider in the Northern Cape, known for excellence, innovation, and empowerment — setting the standard for what a proudly South African company can achieve.</p>
+      </div>
+    </div>
+
+    <div class="goals-row reveal" style="margin-top:2px;">
+      <div class="goal-card">
+        <div class="goal-num">01</div>
+        <div class="goal-icon"><i class="fas fa-star"></i></div>
+        <div class="goal-text">Deliver exceptional customer service and exceed client expectations</div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-num">02</div>
+        <div class="goal-icon"><i class="fas fa-medal"></i></div>
+        <div class="goal-text">Establish a reputation for quality and reliability in all areas</div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-num">03</div>
+        <div class="goal-icon"><i class="fas fa-users"></i></div>
+        <div class="goal-text">Contribute to skills development and job creation in Kathu</div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-num">04</div>
+        <div class="goal-icon"><i class="fas fa-expand-arrows-alt"></i></div>
+        <div class="goal-text">Expand our footprint in the Northern Cape and beyond</div>
+      </div>
+      <div class="goal-card">
+        <div class="goal-num">05</div>
+        <div class="goal-icon"><i class="fas fa-handshake"></i></div>
+        <div class="goal-text">Foster long-term partnerships with clients and suppliers</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-divider"></div>
+
+  <!-- DIRECTOR -->
+  <section class="director-section">
+    <div class="reveal-left">
+      <div class="section-label">Leadership</div>
+      <h2 class="section-title">Meet the <span style="color:var(--gold-light)">Director</span></h2>
+      <div class="director-frame" style="margin-top:2.5rem;">
+        <div class="dir-avatar">BJB</div>
+        <div class="dir-name">Benjamin<br>Joshwill Blom</div>
+        <div class="dir-role">Founder & Director</div>
+        <p style="font-size:0.9rem;color:rgba(245,248,252,0.68);line-height:1.75;">Appointed 18 November 2024. 100% beneficial owner and driving force behind BJB Solutions — committed to empowering the Kathu community through quality service delivery.</p>
+        <div class="dir-detail">
+          <p><i class="fas fa-map-marker-alt"></i> Kwikstert Street 05, Siyathemba, Kathu, 8446</p>
+          <p style="margin-top:0.5rem;"><i class="fas fa-id-card"></i> ID: 8712155412085</p>
+          <p style="margin-top:0.5rem;"><i class="fas fa-calendar-alt"></i> Appointed: 18/11/2024</p>
+        </div>
+        <div class="dir-tag"><i class="fas fa-check-circle"></i> 100% Beneficial Owner · Declared 18/07/2025</div>
+      </div>
+    </div>
+
+    <div class="director-details reveal-right">
+      <div class="detail-block">
+        <div class="detail-icon"><i class="fas fa-building"></i></div>
+        <div>
+          <h4>CIPC Registration</h4>
+          <p>Company registered 18 November 2024 under registration number 2024/729444/07. Registered as a Private Company — actively in business.</p>
+        </div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-icon"><i class="fas fa-file-invoice"></i></div>
+        <div>
+          <h4>Beneficial Ownership (CIPC)</h4>
+          <p>BLOM BENJAMIN JOSHWILL holds 100% controlling interest. BO declaration filed 18 July 2025 in accordance with CIPC requirements.</p>
+        </div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-icon"><i class="fas fa-shield-alt"></i></div>
+        <div>
+          <h4>COID / Compensation Fund</h4>
+          <p>Reference 2024170691. Letter of good standing valid to 30 April 2026. Registered for civil construction, steel reinforcing, and plant hire activities.</p>
+        </div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-icon"><i class="fas fa-receipt"></i></div>
+        <div>
+          <h4>SARS Tax Compliance</h4>
+          <p>Tax reference number 9119150283. Registered with SARS. Financial year end: February. Contact SARS: 0800 00 7277.</p>
+        </div>
+      </div>
+      <div class="detail-block">
+        <div class="detail-icon"><i class="fas fa-city"></i></div>
+        <div>
+          <h4>Municipal Verification</h4>
+          <p>Proof of residence issued by Gamagara Local Municipality (Office of the Speaker) confirming Kwikstert Street 05, Siyathemba, Kathu.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-divider"></div>
+
+  <!-- B-BBEE -->
+  <section class="bbbee-section">
+    <div class="reveal">
+      <div class="section-label">Transformation credentials</div>
+      <h2 class="section-title">B-BBEE <span style="color:var(--gold-light)">Level 1</span> Status</h2>
+    </div>
+    <div class="bbbee-grid">
+      <div class="bbbee-badge-wrap reveal-left">
+        <div class="bbbee-ring">
+          <div class="bbbee-inner">
+            <div class="lv">B-BBEE</div>
+            <div class="num">L1</div>
+            <div class="pct">135%</div>
+            <div class="sub">Procurement recognition</div>
+          </div>
+        </div>
+      </div>
+      <div class="bbbee-stats reveal-right">
+        <div class="bbbee-stat">
+          <div class="bbbee-stat-label">Ownership</div>
+          <div class="bbbee-stat-val">100%</div>
+          <div class="bbbee-stat-sub">Black ownership</div>
+        </div>
+        <div class="bbbee-stat">
+          <div class="bbbee-stat-label">Recognition Level</div>
+          <div class="bbbee-stat-val">135%</div>
+          <div class="bbbee-stat-sub">Procurement recognition</div>
+        </div>
+        <div class="bbbee-stat">
+          <div class="bbbee-stat-label">Certificate</div>
+          <div class="bbbee-stat-val" style="font-size:1.2rem;">9421023633</div>
+          <div class="bbbee-stat-sub">Issued 21 Nov 2025</div>
+        </div>
+        <div class="bbbee-stat">
+          <div class="bbbee-stat-label">Valid Until</div>
+          <div class="bbbee-stat-val" style="font-size:1.4rem;">Nov 2026</div>
+          <div class="bbbee-stat-sub">20 November 2026</div>
+        </div>
+        <div class="bbbee-stat">
+          <div class="bbbee-stat-label">Black Shareholders</div>
+          <div class="bbbee-stat-val">1</div>
+          <div class="bbbee-stat-sub">Benjamin Joshwill Blom</div>
+        </div>
+        <div class="bbbee-stat">
+          <div class="bbbee-stat-label">Rural / Underdeveloped</div>
+          <div class="bbbee-stat-val">100%</div>
+          <div class="bbbee-stat-sub">Kathu, Northern Cape</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="gold-divider"></div>
+
+  <!-- TARGET MARKET & SERVICES -->
+  <section class="ts-section">
+    <div class="reveal">
+      <div class="section-label">Market & Operations</div>
+      <h2 class="section-title">Who we serve & <span style="color:var(--gold-light)">what we do</span></h2>
+    </div>
+    <div class="ts-grid reveal">
+      <div class="ts-card">
+        <h3><i class="fas fa-crosshairs"></i> Target Market</h3>
+        <ul class="ts-list">
+          <li>Mining companies in Kathu and surrounding areas</li>
+          <li>Businesses requiring commercial cleaning, gardening, and supply chain services</li>
+          <li>Individuals and organisations needing skills development and training programs</li>
+          <li>Construction clients — residential, commercial, and industrial sectors</li>
+        </ul>
+      </div>
+      <div class="ts-card">
+        <h3><i class="fas fa-wrench"></i> Core Services</h3>
+        <ul class="ts-list">
+          <li>Training Programs — empowering individuals and teams with skills to excel</li>
+          <li>Construction — professional solutions tailored to client needs</li>
+          <li>Commercial Cleaning — spotless facility management</li>
+          <li>Gardening & Landscaping — transforming outdoor spaces</li>
+          <li>Supply of Goods — wide range of quality products</li>
+          <li>Catering — food service solutions</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- VERIFICATION STRIP -->
+  <div class="gold-divider"></div>
+  <div class="verify-strip">
+    <div class="verify-item">
+      <div class="verify-icon"><i class="fas fa-file-contract"></i></div>
+      <div class="verify-label">CIPC Registration</div>
+      <div class="verify-val">2024/729444/07</div>
+    </div>
+    <div class="verify-item">
+      <div class="verify-icon"><i class="fas fa-receipt"></i></div>
+      <div class="verify-label">SARS Tax Ref</div>
+      <div class="verify-val">9119150283</div>
+    </div>
+    <div class="verify-item">
+      <div class="verify-icon"><i class="fas fa-award"></i></div>
+      <div class="verify-label">B-BBEE Certificate</div>
+      <div class="verify-val">9421023633</div>
+    </div>
+    <div class="verify-item">
+      <div class="verify-icon"><i class="fas fa-shield-alt"></i></div>
+      <div class="verify-label">COID Reference</div>
+      <div class="verify-val">2024170691</div>
+    </div>
+    <div class="verify-item">
+      <div class="verify-icon"><i class="fas fa-city"></i></div>
+      <div class="verify-label">Municipality</div>
+      <div class="verify-val">Gamagara Local</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="gold-divider"></div>
+  <footer>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">BJB<span>⚡</span>SOLUTIONS</div>
+        <p class="footer-tagline">A proudly 100% black-owned company from Kathu, Northern Cape — delivering precision, progress, and community empowerment since 2024.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Services</h5>
+        <a href="#">Training Programs</a>
+        <a href="#">Construction</a>
+        <a href="#">Commercial Cleaning</a>
+        <a href="#">Gardening & Landscaping</a>
+        <a href="#">Supply of Goods</a>
+        <a href="#">Catering</a>
+      </div>
+      <div class="footer-col">
+        <h5>Company</h5>
+        <p>Reg: 2024/729444/07</p>
+        <p>Tax: 9119150283</p>
+        <p>B-BBEE Cert: 9421023633</p>
+        <p>Exp: 20 Nov 2026</p>
+        <p style="margin-top:0.8rem;">© 2024 BJB Solutions (Pty) Ltd</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>BJB Solutions (Pty) Ltd · All rights reserved · 2024</span>
+      <span>🇿🇦 100% Black-Owned · Rural Base · Northern Cape</span>
+    </div>
+  </footer>
+
+  <script>
+    // ─── CUSTOM CURSOR ───
+    const cursor = document.getElementById('cursor');
+    const ring = document.getElementById('cursorRing');
+    let mx = 0, my = 0, rx = 0, ry = 0;
+
+    document.addEventListener('mousemove', e => {
+      mx = e.clientX; my = e.clientY;
+      cursor.style.transform = `translate(${mx - 6}px, ${my - 6}px)`;
+    });
+
+    function animateRing() {
+      rx += (mx - rx) * 0.12;
+      ry += (my - ry) * 0.12;
+      ring.style.transform = `translate(${rx - 20}px, ${ry - 20}px)`;
+      requestAnimationFrame(animateRing);
+    }
+    animateRing();
+
+    document.querySelectorAll('a, button, .goal-card, .mv-card, .info-block, .detail-block, .bbbee-stat, .ts-card, .verify-item, .value-tag').forEach(el => {
+      el.addEventListener('mouseenter', () => ring.classList.add('expanded'));
+      el.addEventListener('mouseleave', () => ring.classList.remove('expanded'));
+    });
+
+    // ─── SCROLL REVEAL ───
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => observer.observe(el));
+
+    // ─── PARALLAX HERO ───
+    const heroBg = document.querySelector('.page-hero-bg');
+    window.addEventListener('scroll', () => {
+      if (heroBg) heroBg.style.transform = `translateY(${window.scrollY * 0.3}px) scale(1.06)`;
+    });
+  </script>
+</body>
+</html>
